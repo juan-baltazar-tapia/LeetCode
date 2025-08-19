@@ -12,7 +12,7 @@ class Solution {
     //insert words length before every word
     for (const word of strs) {
       const length = word.length.toString();
-      result.push(length + word);
+      result.push(length + "#" + word);
     }
     return result.join("");
   }
@@ -25,10 +25,16 @@ class Solution {
     //seperate every word based on number before it
     const result = [];
     let i = 0;
+
     while (i < str.length) {
-      const length = Number(str.charAt(i));
-      result.push(str.slice(i + 1, length + i + 1));
-      i += length + 1;
+      const symbolIndex = str.slice(i).indexOf("#") + i;
+      //console.log(symbolIndex);
+      const length = Number(str.slice(i, symbolIndex));
+      //console.log("length", length);
+      const numIndex = length > 9 ? length.toString().length + 1 : 2;
+
+      result.push(str.slice(i + numIndex, length + i + numIndex));
+      i += length + numIndex;
     }
 
     return result;
@@ -37,7 +43,7 @@ class Solution {
 
 const solution = new Solution();
 
-const encoded = solution.encode(["we", "say", ":", "yes"]);
+const encoded = solution.encode(["we", "say", ":", "yes", "!@#$%^&*()"]);
 console.log(encoded);
 const decoded = solution.decode(encoded);
 console.log(decoded);
