@@ -14,24 +14,26 @@ var productExceptSelf = function (nums) {
   // 1,-1,-1,0,0
   // right to left
   // 24,12,4,1
-  const leftArray = [];
-  const rightArray = [];
+  const n = nums.length;
+  const leftArray = new Array(n);
+  const rightArray = new Array(n);
   const result = [];
-  let product = 1;
-  for (let i = 0; i < nums.length; i++) {
-    const previous = nums[i - 1] !== undefined ? nums[i - 1] : 1;
-    leftArray.push(product * previous);
-    product *= previous;
+
+  leftArray[0] = 1;
+  rightArray[n-1] = 1;
+ 
+  for (let i = 1; i < nums.length; i++) {
+    leftArray[i] = leftArray[i-1] * nums[i-1];
   }
-  product = 1;
-  for (let i = nums.length - 1; i >= 0; i--) {
-    const upfront = nums[i + 1] !== undefined ? nums[i + 1] : 1;
-    rightArray.unshift(product * upfront);
-    product *= upfront;
+
+  for (let i = nums.length - 2; i >= 0; i--) {
+    rightArray[i] = rightArray[i+1] * nums[i+1];
   }
   for (let i = 0; i < nums.length; i++) {
     result.push(leftArray[i] * rightArray[i]);
   }
+//   console.log(leftArray)
+//   console.log(rightArray)
 
   return result;
 };
