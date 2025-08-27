@@ -27,6 +27,7 @@ var isValidSudoku = function (board) {
         set.add(item);
       }
     }
+    console.log(`Row: ${Array.from(set.values())}`);
   }
   // validate each column with a set
   //         for loop using let col = 0;
@@ -35,10 +36,12 @@ var isValidSudoku = function (board) {
   //          00, 10, 20, 30,
   //          01, 11, 21, 31
   //
+  //console.log(board.length);
   for (let i = 0; i < board.length; i++) {
     const set = new Set();
     for (let j = 0; j < board.length; j++) {
       const item = board[j][i];
+     // console.log(item);
       if (item !== ".") {
         if (set.has(item)) {
           return false;
@@ -46,6 +49,7 @@ var isValidSudoku = function (board) {
         set.add(item);
       }
     }
+    console.log(`Column: ${Array.from(set.values())}`);
     // validate each 3x3 with a set
     // 00, 01, 02.  03, 04, 05.  06, 07, 08. // i + 3
     // 10, 11, 12
@@ -61,34 +65,35 @@ var isValidSudoku = function (board) {
     //                 for loop k = 0
     //                       for loop m = 0
     //                            set.add( [3i + k][3j + m])
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        const set = new Set();
-        for (let k = 0; k < 3; k++) {
-          for (let m = 0; m < 3; m++) {
-            const item = board[3 * i + k][3 * j + m];
-            if (item !== ".") {
-              if (set.has(item)) {
-                return false;
-              }
-              set.add(item);
+  }
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const set = new Set();
+      for (let k = 0; k < 3; k++) {
+        for (let m = 0; m < 3; m++) {
+          const item = board[3 * i + k][3 * j + m];
+          if (item !== ".") {
+            if (set.has(item)) {
+              return false;
             }
+            set.add(item);
           }
         }
       }
+      console.log(`3x3: ${Array.from(set.values())}`);
     }
-    //00 01 02
-    //10 11 12
-    //                             0 0 0 0
-    //                             0 0 0 1
-    //                             0 0 0 2
-
-    //                             0 0 1 0
-    //                             0 0 1 1
-    //                             0 0 1 2
-    //                             0 0 1 3
-    return true;
   }
+  //00 01 02
+  //10 11 12
+  //                             0 0 0 0
+  //                             0 0 0 1
+  //                             0 0 0 2
+
+  //                             0 0 1 0
+  //                             0 0 1 1
+  //                             0 0 1 2
+  //                             0 0 1 3
+  return true;
 };
 
 const board = [
@@ -102,4 +107,16 @@ const board = [
   [".", ".", ".", "4", "1", "9", ".", ".", "5"],
   [".", ".", ".", ".", "8", ".", ".", "7", "9"],
 ];
-console.log(isValidSudoku(board));
+
+const board2 = [
+  [".", ".", "4", ".", ".", ".", "6", "3", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  ["5", ".", ".", ".", ".", ".", ".", "9", "."],
+  [".", ".", ".", "5", "6", ".", ".", ".", "."],
+  ["4", ".", "3", ".", ".", ".", ".", ".", "1"],
+  [".", ".", ".", "7", ".", ".", ".", ".", "."],
+  [".", ".", ".", "5", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+];
+console.log(isValidSudoku(board2));
