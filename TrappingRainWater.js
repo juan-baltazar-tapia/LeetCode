@@ -3,88 +3,83 @@
 //Input: height = [0,1,0,2,1,0,1,3,2,1,2,1] array
 //                               l
 //Output: 6 number
-// Will the input array be empty?
-// n might be 1
-// numbers will never be negative
-
-//[0,1,0,2,1,0,1,3,2,1,2,1]
-// first find non zero value
 //
-//
-// set l to first non zero value
-// set r = l + 1, add r[i] to set
-//[0,1,0,2,1,0,1,3,2,1,2,1]
-//.               l        r
-// (1: index)
-//while r val < l val and r in bounds
-//   if r is in set: find water between two sides (helper function)
-//.  else add r to set
-// move left to right pointer
-// distance(r - l - 1) * min(l and r)
+//Make two arrays, leftMax, rightMax, 
+//leftMax, left to right, check max height on left hand
+// [ 0, 0, 1, 1, 2, 2, 2, etc]
+//rightMax, right to left, check max height on right hand
+// for every number, min(leftMax and rightMax) - currNumber
+// if number is negative, ignore, else add to sum
 
-// helper function (set(l),r index)
-//    l = array[l]
-//.   r = array[l] + 1
-// while (r inbounds of r)
-//   sum += height difference unless negative
-// return sum
+// [0,1,0,2,1]
+// result = 1
+// leftMAx = [ 0, 0, 1, 1,  2]
+// rightMax = [ 2, 2, 2, 2, 0]
+// 
+// initialize leftMax, rightMzx to size height, result
+// for loop
+//    currMax = 0
+//.   if [i - 1] > currMax, update currMax
+//     leftMax.push( currMax )
 
+// for loop in reverse
+//.   currMAx = 0
+//    if (i + 1) > currMax, update curfMax
+//        rightMax[i] = ( currMax )
+
+// for loop
+//.   sum =  min(l, r) - curr i 
+//    final_sum = sum > 0 ? sum : 0
+//    result += final_sum;
 /**
  * @param {number[]} height
  * @return {number}
  */
 var trap = function (height) {
-  if (height.length === 1) return 0;
-
-  const previousNumbers = new Map();
-  let l = 0;
-  let trappedWater = 0;
-
-  while (height[l] === 0) {
-    l += 1;
-  }
-  let r = l + 1;
-  previousNumbers.set(height[r], r);
-
-  while (height[r] < height[l] && r < height.length) {
-    //   if r is in mpa: find water between two sides (helper function)
-    //.  else add r to map
-    // move left to right pointer
-    // distance(r - l - 1) * min(l and r)
-    if (previousNumbers.has(height[r])) {
-        //console.log(previousNumbers.get(height[r]))
-      trappedWater += findTrappedWater(l, previousNumbers.get(height[r]));
-    } else {
-        previousNumbers.set(height[r], r)
+// initialize leftMax, rightMzx to size height, result
+  const leftMax = [];
+  const rightMax = [];
+  let result = 0;
+// for loop
+//    currMax = 0
+//.   if [i - 1] > currMax, update currMax
+//    leftMax.push( currMax )
+  let currMax = 0;
+  for (let i = 0; i < height.length; i++){
+    //console.log(height[i])
+    if (height[i - 1] > currMax){
+      currMax = height[i - 1];
     }
-    //potential edge case
-    trappedWater += (r - l - 1) * Math.min(height[l], height[r]);
-    l = r;
-    r = l + 1;
-    previousNumbers.set(height[r], r);
+    leftMax.push(currMax);
+
+  }
+  //console.log(leftMax)
+
+// for loop in reverse
+//.   currMAx = 0
+//    if (i + 1) > currMax, update curfMax
+//    rightMax.unshift = ( currMax )
+  currMax = 0;
+  for (let i = height.length - 1; i >= 0; i--){
+      if (height[i + 1] > currMax){
+      currMax = height[i + 1];
+    }
+    rightMax.unshift(currMax);
   }
 
-  return trappedWater;
-};
-
-function findTrappedWater(leftBound, rightBound) {
-  // helper function (set(l),r index)
-  //    l = array[l]
-  //.   r = array[l] + 1
-  // while (r inbounds of r)
-  //   sum += height difference unless negative
-  // return sum
-  currRight = leftBound + 1
-  currLeft = leftBound;
-  let sum = 0;
-
-  while (currRight < rightBound) {
-    currSum = height[currLeft] - height[currRight];
-    console.log(currSum)
-    if (currSum > 0) sum += currSum;
+// for loop
+//.   sum =  min(l, r) - curr i 
+//    final_sum = sum > 0 ? sum : 0
+//    result += final_sum;
+  for ( let i = 0; i < height.length; i++){
+    const sum = Math.min(leftMax[i], rightMax[i]) - height[i];
+    
+    // 1, 1 , 2, 1 , 1
+    const final_sum = sum > 0 ? sum : 0;
+    //console.log(final_sum)
+    result += final_sum;
   }
-
-  return sum;
+  return result;
 }
 
 console.log(trap([0,1,0,2,1,0,1,3,2,1,2,1]));
