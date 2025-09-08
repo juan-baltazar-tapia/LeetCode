@@ -27,14 +27,15 @@ class Solution {
     let i = 0;
 
     while (i < str.length) {
-      const symbolIndex = str.slice(i).indexOf("#") + i;
-      //console.log(symbolIndex);
-      const length = Number(str.slice(i, symbolIndex));
-      //console.log("length", length);
-      const numIndex = length > 9 ? length.toString().length + 1 : 2;
-
-      result.push(str.slice(i + numIndex, length + i + numIndex));
-      i += length + numIndex;
+      let j = i;
+      while (str[j] !== '#'){
+        j++;
+      }
+      let length = parseInt( str.substring(i,j));
+      i = j + 1
+      j = i + length
+      result.push(str.substring(i,j));
+      i = j;
     }
 
     return result;
