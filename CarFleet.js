@@ -45,17 +45,17 @@ var carFleet = function(target, position, speed) {
     const pairs = position.map((p, i) => [p, speed[i]]);
     //console.log(pairs)
     pairs.sort((a,b) => a[0] - b[0])
-    // console.log(pair)
+    console.log(pairs)
     const stack = [];
     for (const pair of pairs){
         currTime = (target - pair[0]) / pair[1];
-        //console.log('currTime', currTime)
-        if (stack.length > 0 && stack[stack.length - 1] <= currTime){
+        console.log('currTime', currTime)
+        while (stack.length > 0 && stack[stack.length - 1] <= currTime){
             stack.pop();
         }
         stack.push(currTime)
     }
-    //console.log('stack', stack)
+    console.log('stack', stack)
     return stack.length;
 };
-console.log(carFleet(12,[10,8,0,5,3], [2,4,1,1,4]));
+console.log(carFleet(10,[0,4,2], [2,1,3]));
