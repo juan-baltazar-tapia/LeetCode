@@ -33,42 +33,30 @@
 
 // Sort the array, Go to index (h - length) form the back
 var minEatingSpeed = function (piles, h) {
-    piles.sort((a, b) => a - b);
-    let minK = piles[piles.length - 1];
-    console.log(piles)
-    
-    const k = [];
-    for (let i = 1; i <= minK; i++) {
-        k.push(i)
-    }
-    console.log("k",k)
 
     let l = 0;
-    let r = k.length - 1;
+    let r = Math.max(...piles);
+    let result = r;
     while (l <= r) {
-      
-        let midIndex= Math.floor((l + r) / 2);
-        let midValue = k[midIndex];
-        const result = testMinEatingSpeed(piles, midValue);
-        if (result > h) {
-            l = midIndex + 1;
+        let midValue= Math.floor((l + r) / 2);
+        let hours = 0;
+        for (const num of piles){ 
+            hours += Math.ceil(num / midValue);
+        }
+        if (hours <= h) {
+            result = Math.min(result, midValue)
+            r = midValue - 1;
         } else {
-            minK = Math.min(minK, midValue)
-            r = midIndex - 1;
+            //if hours is greater than k, that means we didn't have enough time, so we must 
+            //INCREASE THE rate of k
+            l = midValue + 1;
         }
     }
-    return minK;
+    return result;
 
 };
 
-function testMinEatingSpeed(piles, k) {
-    let sum = 0;
-    for (const num of piles){ 
-        sum += Math.ceil(num / k)
-    }
-console.log("piles", piles, "k", k, "sum", sum)
-    return sum;  
-}
+
 
 //console.log(minEatingSpeed([3, 6, 7, 11], 8)) //4
 console.log(minEatingSpeed([30,11,23,4,20], 6)) //23
