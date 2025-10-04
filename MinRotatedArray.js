@@ -17,29 +17,34 @@
  * @param {number[]} nums
  * @return {number}
  */
+//[4,5,6,7,0,1,2]
+// if middle poiner >= left, that side is part of the left part of sorted array, 
+//
 var findMin = function (nums) {
   let l = 0;
   let r = nums.length - 1;
-  //console.log('nums', nums);
-  let min = nums[Math.floor((l + r) / 2)];
-  //console.log('min', min)
-  while (l <= r) {
+  let result = nums[0]
+
+  while (l < r) {
+    if (nums[l] < nums[r]){
+        result = Math.min(result, nums[l])
+    }
     mid = Math.floor((l + r) / 2);
-   // console.log('left', nums[l], 'num', nums[mid], 'right', nums[r])
-    if (nums[r] < nums[mid]){
-        min = Math.min(min, nums[r], nums[mid])
+    result = Math.min(result, nums[mid])
+
+    if (nums[mid] > nums[l]){
         l = mid + 1;
     } else {
-        min = Math.min(min, nums[l], nums[mid])
         r = mid - 1;
     }
   }
-  return min;
+  return result;
 };
 
-// console.log(findMin([3, 4, 5, 1, 2])); //1
-// console.log(findMin([4, 5, 6, 7, 0, 1, 2])); //0
-// console.log(findMin([11, 13, 15, 17])); //11
-// console.log(findMin([3,1,2]))//1
+console.log(findMin([3, 4, 5, 1, 2])); //1
+console.log(findMin([4, 5, 6, 7, 0, 1, 2])); //0
+console.log(findMin([11, 13, 15, 17])); //11
+console.log(findMin([3,1,2]))//1
 // console.log(findMin([3,4,1,2,3]))
 // console.log(findMin([3,4,5,6,1,2]));
+
