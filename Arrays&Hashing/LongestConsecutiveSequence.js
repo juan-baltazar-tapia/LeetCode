@@ -7,44 +7,57 @@
 // Input: nums = [100,4,200,1,3,2]
 // Output: 4
 // Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
-
-
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var longestConsecutive = function(nums) {
-    // sort array, check for longest consecutive sequence
-    //.   have counter of largest
-    // [1,2,3,4,100,200]
-    // iterate through array (for loop i = 1), if curr = prev + 1, add one
-    // if its not, reset back to 1
-    if (nums.length === 1) return 1;
-    
-    let result = 0;
-    let current = 1;
-    let previous;
+var longestConsecutive = function (nums) {
+  // sort array, check for longest consecutive sequence
+  //.   have counter of largest
+  // [1,2,3,4,100,200]
+  // iterate through array (for loop i = 1), if curr = prev + 1, add one
+  // if its not, reset back to 1
+  if (nums.length === 1) return 1;
 
-    nums.sort((a,b) => a - b);
-    console.log(nums)
-    // current = 3
-    // previous = 2
-    // [ 0, 1, 1, 2 ]
-    //
-    for (let i = 1; i < nums.length + 1; i++){
-        if (nums[i] === nums[i - 1] + 1){
-            current += 1
-            previous = nums[i];
-            //console.log(current)
-        } else if (nums[i] === previous) {
-            continue;
-        }
-        else {
-            result = current > result ? current: result;
-            current = 1;
-        }
+  let result = 0;
+  let current = 1;
+  let previous;
+
+  nums.sort((a, b) => a - b);
+  console.log(nums);
+  // current = 3
+  // previous = 2
+  // [ 0, 1, 1, 2 ]
+  //
+  for (let i = 1; i < nums.length + 1; i++) {
+    if (nums[i] === nums[i - 1] + 1) {
+      current += 1;
+      previous = nums[i];
+      //console.log(current)
+    } else if (nums[i] === previous) {
+      continue;
+    } else {
+      result = current > result ? current : result;
+      current = 1;
     }
-    return result;
+  }
+  return result;
 };
 
-console.log(longestConsecutive([1,0,1,2]));
+function longestConsecutive2(nums) {
+  const set = new Set(nums);
+  let result = 0;
+
+  for (const num of [...set.values()]) {
+    if (!set.has(num - 1)) {
+      let currLongest = 0;
+      while (set.has(num + currLongest)) {
+        currLongest += 1;
+      }
+      result = Math.max(result, currLongest);
+    }
+  }
+  return result;
+}
+
+console.log(longestConsecutive2([1, 0, 1, 2]));
