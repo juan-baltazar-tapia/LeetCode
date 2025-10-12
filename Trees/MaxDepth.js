@@ -18,8 +18,10 @@ import * as TreeNode from "./TreeNode.js";
 var maxDepth = function(root) {
     if (root === null) return 0;
    //console.log('val',root.val)
+   const left = maxDepth(root.left);
+   const right = maxDepth(root.right)
 
-    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right)); 
+    return 1 + Math.max(left, right); 
 };
 
 const tree = TreeNode.createTree([3,9,20,null,null,15,7]); //3
